@@ -151,8 +151,6 @@ query Students {
 
 # graphql-fastify-api
 
----
-
 A GraphQL student-management API built with **Fastify**, **Mercurius**, **PostgreSQL**, and **Knex**. It demonstrates schema and resolver organization, dependency injection through the GraphQL context, graceful shutdown, and integration tests against a real PostgreSQL container.
 
 ## Requirements
