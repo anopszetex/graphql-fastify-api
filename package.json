@@ -1,7 +1,7 @@
 {
-  "name": "@anopszetex/backend-api",
+  "name": "@anopszetex/graphql-fastify-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "GraphQL API with Fastify, Mercurius, PostgreSQL and testcontainers",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -19,7 +19,15 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anopszetex/graphql-fastify-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anopszetex/graphql-fastify-api/issues"
+  },
+  "homepage": "https://github.com/anopszetex/graphql-fastify-api#readme",
   "dependencies": {
     "@graphql-tools/load-files": "^7.0.0",
     "@graphql-tools/merge": "^9.0.3",

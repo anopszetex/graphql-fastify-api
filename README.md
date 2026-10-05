@@ -1,102 +1,107 @@
-# API GraphQL
+# graphql-fastify-api
 
-Esta API GraphQL facilita o gerenciamento de estudantes, fornecendo operações CRUD (criar, ler, atualizar e deletar). Com GraphQL, você tem mais flexibilidade e controle sobre os dados que solicita, tornando a integração com suas aplicações mais eficiente.
+API GraphQL para gerenciamento de estudantes, construída com **Fastify**, **Mercurius**, **GraphQL** e **PostgreSQL**.
 
-## Tecnologias Utilizadas 👨‍💻
+O projeto demonstra como montar uma API moderna em Node.js com testes de integração usando **testcontainers**, separação de responsabilidades e shutdown gracioso.
 
-- [Node.js >v20.0.0 <21.1.0](https://nodejs.org/en/download/)
-- [Npm 10.2.4](https://docs.npmjs.com/cli/v8/commands/npm-install)
-- [GraphQL 16.8.1](https://graphql.org/)
-- [Fastify 4.26.1](https://www.fastify.io/docs/latest/Guides/Getting-Started/)
-- [Mercurius 13.3.3](https://mercurius.dev/#/?id=install)
-- [Postgres 14+](https://www.postgresql.org/)
+## Tecnologias
 
-### Requisitos 📋
+- [Node.js](https://nodejs.org/) 20+
+- [Fastify](https://www.fastify.io/) — framework web rápido e leve
+- [Mercurius](https://mercurius.dev/) — integração GraphQL para Fastify
+- [GraphQL](https://graphql.org/)
+- [Knex.js](https://knexjs.org/) — query builder SQL
+- [PostgreSQL](https://www.postgresql.org/)
+- [testcontainers](https://testcontainers.com/) — banco de testes real em containers
+- [node --test](https://nodejs.org/api/test.html) — runner de testes nativo
 
-Clone este repositório para o seu ambiente local:
+## Arquitetura
 
-```bash
-git clone git@github.com:anopszetex/backend-api.git
+```text
+src/
+├── server/          # bootstrap do Fastify, schema GraphQL e lifecycle
+├── graphql/         # type definitions e resolvers
+├── infra/db/        # conexão, migrations e seeds do Knex
+└── support/         # utilitários
 ```
 
-Navegue até o diretório do projeto:
+- O schema GraphQL é montado a partir de arquivos `.graphql` e resolvers organizados por domínio.
+- O contexto da requisição injeta a conexão com o banco, mantendo os resolvers testáveis.
+- O shutdown gracioso (`close-with-grace`) garante que conexões e o servidor sejam fechados corretamente.
 
-```bash
-cd backend-api
-```
+## Como rodar
 
-Instale as dependências do projeto:
+### Pré-requisitos
 
-```bash
-npm ci --silent
-```
+- Node.js 20+
+- Docker e Docker Compose
 
-Para iniciar o servidor, execute o seguinte comando:
-
-```bash
-# antes de iniciar o servidor, você deve subir o banco de dados
-# para isso, você pode usar o docker-compose
-docker-compose up -d
-
-npm run dev
-```
-
-### Testes 🧪
-
-Para executar os testes, execute os seguintes comandos:
-
-```bash
-# executa teste unitário e de integração
-npm run test
-
-# para observar qualquer alteração nos testes
-npm run test:watch
-
-# para rodar apenas o teste unitário e/ou e2e, você pode passar o caminho do arquivo
-npm run test caminho/para/arquivo.test.js
-```
-
-### Docker 🐳
-
-Localmente o docker-compose é usado para criar uma instância do banco de dados.
+### Subir o banco de dados
 
 ```sh
-# baixa as imagens docker
-docker-compose pull
-
-# sobe o serviço docker
-docker-compose up
-
-# sobe o serviço docker em segundo plano
 docker-compose up -d
-
-# encerra o serviço docker e os dados associados a eles
-docker-compose down -v
 ```
 
-### Migrations e Seeds 🌱
+### Instalar dependências
 
 ```sh
-# executa as migrations
+npm ci
+```
+
+### Rodar migrations e seeds
+
+```sh
 npm run knex:migrate
-  ️
-# executa as seeds
 npm run knex:seed
 ```
 
-### Lint e Prettier 🧹
+### Iniciar o servidor
 
 ```sh
-# verifica se há erros no código
-npm run lint:ci
+npm run dev
+```
 
-# formata os arquivos
+A API estará disponível em `http://0.0.0.0:4000`.
+
+### Health check
+
+```sh
+curl http://0.0.0.0:4000/.well-known/health
+```
+
+## Testes
+
+Os testes usam **testcontainers** para subir um PostgreSQL real durante a execução, garantindo que o comportamento reflete o ambiente de produção.
+
+```sh
+# todos os testes
+npm test
+
+# com variáveis de ambiente
+npm run test:env
+
+# modo watch
+npm run test:watch
+
+# arquivo específico
+npm test tests/students.test.js
+```
+
+## Lint e formatação
+
+```sh
+# verificar
+npm run lint:ci
+npm run format:check
+
+# corrigir
+npm run lint
 npm run format
 ```
 
-### Scripts 📜
+## Exemplos de operações GraphQL
 
-#### Mutation para criar um estudante
+### Criar estudante
 
 ```graphql
 mutation CreateStudent($input: StudentInput!) {
@@ -114,54 +119,14 @@ mutation CreateStudent($input: StudentInput!) {
 {
   "input": {
     "name": "John Doe",
-    "email": "teste@teste.com",
+    "email": "john@example.com",
     "ra": "123456",
     "cpf": "12345678901"
   }
 }
 ```
 
-### Mutation para atualizar um estudante
-
-```graphql
-mutation UpdateStudent($id: ID!, $input: StudentInput!) {
-  updateStudent(id: $id, input: $input) {
-    id
-    name
-    email
-    ra
-    cpf
-  }
-}
-```
-
-```json
-{
-  "id": 1,
-  "input": {
-    "name": "John Doe1",
-    "email": "teste@teste.com",
-    "ra": "123456",
-    "cpf": "12345678901"
-  }
-}
-```
-
-### Mutation para deletar um estudante
-
-```graphql
-mutation DelStudent($id: ID!) {
-  delStudent(id: $id)
-}
-```
-
-```json
-{
-  "id": 1
-}
-```
-
-### Query para listar todos os estudantes
+### Listar estudantes
 
 ```graphql
 query Students {
@@ -174,3 +139,7 @@ query Students {
   }
 }
 ```
+
+## Licença
+
+[MIT](LICENSE)
