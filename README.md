@@ -1,5 +1,3 @@
-# graphql-fastify-api
-
 <details>
 <summary><strong>🇧🇷 Ver documentação em Português (Brasil)</strong></summary>
 
@@ -150,6 +148,8 @@ query Students {
 [MIT](LICENSE)
 
 </details>
+
+# graphql-fastify-api
 
 ---
 
