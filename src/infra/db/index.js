@@ -2,11 +2,12 @@ import knex from 'knex';
 
 import { resolve } from 'node:path';
 
-import { getDatabaseConfig as config } from './config.js';
+import { getDatabaseConfig } from './config.js';
 
 import { __dirname } from './../../support/index.js';
 
 function buildConnectionConfig() {
+  const config = getDatabaseConfig();
   return {
     client: 'pg',
     pool: { min: 0, max: 5, idleTimeoutMillis: 60000 },

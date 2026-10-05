@@ -1,4 +1,4 @@
-import { describe, beforeEach, afterEach, it, after } from 'node:test';
+import { describe, beforeEach, afterEach, it } from 'node:test';
 
 import { buildServer } from '../../src/server/index.js';
 import { deepStrictEqual, strictEqual } from 'node:assert';
@@ -13,23 +13,21 @@ describe('API Workflow', () => {
   beforeEach(async () => {
     container = await new PostgreSqlContainer()
       .withDatabase('students-dev')
-      .withExposedPorts({ host: 5433, container: 5432 })
+      .withExposedPorts(5432)
       .withUsername('root1')
       .withPassword('root1')
       .start();
 
+    process.env.DB_PORT = String(container.getMappedPort(5432));
     server = await buildServer();
     await server.migrate();
     await server.seed();
   });
 
   afterEach(async () => {
-    await server.stop();
-    await container.stop();
-  });
-
-  after(async () => {
-    await container.stop();
+    await server?.stop();
+    await container?.stop();
+    delete process.env.DB_PORT;
   });
 
   it('Should list the students', async () => {
