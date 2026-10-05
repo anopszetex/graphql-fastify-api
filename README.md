@@ -1,49 +1,5 @@
 # graphql-fastify-api
 
-A GraphQL student-management API built with **Fastify**, **Mercurius**, **PostgreSQL**, and **Knex**. It demonstrates schema and resolver organization, dependency injection through the GraphQL context, graceful shutdown, and integration tests against a real PostgreSQL container.
-
-## Requirements
-
-- Node.js 20+
-- Docker and Docker Compose
-
-```sh
-docker-compose up -d
-npm ci
-npm run knex:migrate
-npm run knex:seed
-npm run dev
-```
-
-The API is available at `http://0.0.0.0:4000`; its health endpoint is `/.well-known/health`.
-
-## Architecture
-
-```text
-src/
-├── server/       # Fastify bootstrap, GraphQL schema, and lifecycle
-├── resolvers/    # queries and mutations
-├── schemas/      # GraphQL definitions
-├── infra/db/     # Knex connection, migrations, and seeds
-└── support/      # validation and shared errors
-```
-
-## Tests and quality
-
-```sh
-npm test
-npm run lint:ci
-npm run format:check
-```
-
-The end-to-end suite uses Testcontainers, so Docker must be running.
-
-## License
-
-[MIT](LICENSE)
-
----
-
 <details>
 <summary><strong>🇧🇷 Ver documentação em Português (Brasil)</strong></summary>
 
@@ -194,3 +150,47 @@ query Students {
 [MIT](LICENSE)
 
 </details>
+
+---
+
+A GraphQL student-management API built with **Fastify**, **Mercurius**, **PostgreSQL**, and **Knex**. It demonstrates schema and resolver organization, dependency injection through the GraphQL context, graceful shutdown, and integration tests against a real PostgreSQL container.
+
+## Requirements
+
+- Node.js 20+
+- Docker and Docker Compose
+
+```sh
+docker-compose up -d
+npm ci
+npm run knex:migrate
+npm run knex:seed
+npm run dev
+```
+
+The API is available at `http://0.0.0.0:4000`; its health endpoint is `/.well-known/health`.
+
+## Architecture
+
+```text
+src/
+├── server/       # Fastify bootstrap, GraphQL schema, and lifecycle
+├── resolvers/    # queries and mutations
+├── schemas/      # GraphQL definitions
+├── infra/db/     # Knex connection, migrations, and seeds
+└── support/      # validation and shared errors
+```
+
+## Tests and quality
+
+```sh
+npm test
+npm run lint:ci
+npm run format:check
+```
+
+The end-to-end suite uses Testcontainers, so Docker must be running.
+
+## License
+
+[MIT](LICENSE)
